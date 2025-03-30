@@ -1,33 +1,27 @@
-# Projet-c-M1-MMAA-LUAYU
-Projet c++ M1 MMAA : Détection de droites et de courbes dans une image
+# Détecteur de droites par Transformée de Hough (M1 MMAA - C++)
 
-# Naive Hough Transform (Méthode naïve en C++)
+## Branche : `feature/polaire-cpp`
 
-Ce projet implémente la méthode naïve de la transformée de Hough pour détecter les lignes dans des images PPM (format P3) en C++, inspirée du prototype Python.
 
-## Fonctionnalités
-- Chargement d'images PPM (format P3)
-- Conversion en niveaux de gris
-- Détection de lignes par accumulation `y = mx + b`
-- Affichage console des lignes détectées
-- Tracé des lignes sur l'image (pixels blancs)
+Détecter les segments de droites présents dans une image avec :
+- Une détection de contours intelligente
+- Une transformée de Hough en (ρ, θ)
+- Une suppression des droites dupliquées
+- Un tracé net des droites avec l'algorithme de Bresenham
 
-## Structure
-- `include/hough.hpp` : déclaration de la classe `Hough`
-- `src/hough_naive.cpp` : logique de traitement (chargement, Hough, tracé)
-- `src/main.cpp` : exécutable
-- `images/` : dossier contenant les images `.ppm`
+ La version polaire est plus générale, plus stable, et évite les problèmes avec les droites verticales.
 
-### Exemple : imageAvecDeuxSegments
+Critère	Naïve |(y = mx + b)|	Polaire (ρ = x cos θ + y sin θ)
+Représentation|	(m, b)	|    (rho, theta)
+Problème avec droites verticales|	Oui|	Non
+Précision	|Moyenne	|Haute
+Espace de Hough|	Non uniforme	|Uniforme
+Robustesse|	Limitée|	Forte
 
-```
-Entrée  : deux segments diagonaux
-Sortie  : lignes blanches superposées à l’image
-Console :
-  Ligne détectée : y = 1.00x + 1
-  Ligne détectée : y = -1.00x + 19
-  ...
-```
+Le prototype initial était en Python et utilisait :l’équation y = mx + b, un seuillage fixe, un accumulateur simple,un tracé matplotlib
 
-## Améliorations futures
-- [ ] Version polaire `(ρ, θ)`
+La version C++ reprend ces idées et les améliore : Passage à la représentation polaire,,meilleure couverture de l’espace de droites,suppression des doublons,tracé via l’algorithme de Bresenham avec épaisseur
+
+exemple d'execution sur vs studio
+./detecteur images/imageAvecDeuxSegments.ppm
+./detecteur images/imageM1.ppm
